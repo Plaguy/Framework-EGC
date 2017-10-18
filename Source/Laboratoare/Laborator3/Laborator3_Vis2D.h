@@ -51,8 +51,8 @@ class Laborator3_Vis2D : public SimpleScene
 		void OnMouseScroll(int mouseX, int mouseY, int offsetX, int offsetY) override;
 
 		// Sets the logic space and view space
-		// logicSpace: { x, y, width, height }
-		// viewSpace: { x, y, width, height }
+		//logicSpace: { x, y, width, height }
+		//viewSpace: { x, y, width, height }
 		glm::mat3 VisualizationTransf2D(const LogicSpace &logicSpace, const ViewportSpace &viewSpace);
 		glm::mat3 VisualizationTransf2DUnif(const LogicSpace &logicSpace, const ViewportSpace &viewSpace);
 
@@ -62,5 +62,5 @@ class Laborator3_Vis2D : public SimpleScene
 		float length;
 		ViewportSpace viewSpace;
 		LogicSpace logicSpace;
-		glm::mat3 modelMatrix, visMatrix;
+		glm::mat3 modelMatrix1, modelMatrix2, modelMatrix3, visMatrix;
 };

@@ -35,8 +35,8 @@ void Laborator3::Init()
 	float cy = corner.y + squareSide / 2;
 	
 	// initialize tx and ty (the translation steps)
-	translateX = 0;
-	translateY = 0;
+	translateX = 150;
+	translateY = 250;
 
 	// initialize sx and sy (the scale factors)
 	scaleX = 1;
@@ -70,24 +70,29 @@ void Laborator3::FrameStart()
 void Laborator3::Update(float deltaTimeSeconds)
 {
 	// TODO: update steps for translation, rotation, scale, in order to create animations
-	
-	modelMatrix = glm::mat3(1);
-	modelMatrix *= Transform2D::Translate(150, 250);
+	modelMatrix1 = glm::mat3(1);
+	modelMatrix1 *= Transform2D::Translate(150, 250);
+	modelMatrix1 *= Transform2D::Translate(translateX, translateY);
 	// TODO: create animations by multiplying current transform matrix with matrices from Transform 2D
+	translateX += deltaTimeSeconds * float(100);
+	translateX += deltaTimeSeconds * float(100);
+	RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix1);
 
-	RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix);
-
-	modelMatrix = glm::mat3(1);
-	modelMatrix *= Transform2D::Translate(400, 250);
+	modelMatrix2 = glm::mat3(1);
+	modelMatrix1 *= Transform2D::Translate(400, 250);
+	modelMatrix2 *= Transform2D::Scale(scaleX, scaleY);
 	//TODO create animations by multiplying current transform matrix with matrices from Transform 2D
+	scaleX += deltaTimeSeconds * float(0.01);
+	scaleY += deltaTimeSeconds * float(0.01);
+	RenderMesh2D(meshes["square2"], shaders["VertexColor"], modelMatrix2);
+
 	
-	RenderMesh2D(meshes["square2"], shaders["VertexColor"], modelMatrix);
-
-	modelMatrix = glm::mat3(1);
-	modelMatrix *= Transform2D::Translate(650, 250);
-
+	modelMatrix3 = glm::mat3(1);
+	modelMatrix1 *= Transform2D::Translate(650, 250);
+	modelMatrix3 *= Transform2D::Rotate(angularStep);
+	angularStep += deltaTimeSeconds * float(0.5);
 	//TODO create animations by multiplying current transform matrix with matrices from Transform 2D
-	RenderMesh2D(meshes["square3"], shaders["VertexColor"], modelMatrix);
+	RenderMesh2D(meshes["square3"], shaders["VertexColor"], modelMatrix3);
 }
 
 void Laborator3::FrameEnd()

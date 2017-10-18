@@ -128,26 +128,46 @@ void Laborator3_Vis2D::FrameEnd()
 
 void Laborator3_Vis2D::DrawScene(glm::mat3 visMatrix)
 {
-	modelMatrix = visMatrix * Transform2D::Translate(0, 0);
-	RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix);
+	modelMatrix1 = visMatrix * Transform2D::Translate(0, 0);
+	RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix1);
 
-	modelMatrix = visMatrix * Transform2D::Translate(3, 0);
-	RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix);
+	modelMatrix1 = visMatrix * Transform2D::Translate(3, 0);
+	RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix1);
 
-	modelMatrix = visMatrix * Transform2D::Translate(1.5, 1.5);
-	RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix);
+	modelMatrix1 = visMatrix * Transform2D::Translate(1.5, 1.5);
+	RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix1);
 
-	modelMatrix = visMatrix * Transform2D::Translate(0, 3);
-	RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix);
+	modelMatrix1 = visMatrix * Transform2D::Translate(0, 3);
+	RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix1);
 
-	modelMatrix = visMatrix * Transform2D::Translate(3, 3);
-	RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix);
+	modelMatrix1 = visMatrix * Transform2D::Translate(3, 3);
+	RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix1);
 }
 
 void Laborator3_Vis2D::OnInputUpdate(float deltaTime, int mods)
 {
 	//TODO move the logic window with W, A, S, D (up, left, down, right)
+	if (window->KeyHold(GLFW_KEY_W)) {
+		logicSpace.y -= deltaTime * 10; 
+	}
+	if (window->KeyHold(GLFW_KEY_S)) {
+		logicSpace.y += deltaTime * 10; 
+	}
+	if (window->KeyHold(GLFW_KEY_A)) {
+		logicSpace.x += deltaTime * 10; 
+	}
+	if (window->KeyHold(GLFW_KEY_D)) {
+		logicSpace.x -= deltaTime * 10; 
+	}
 	//TODO zoom in and zoom out logic window with Z and X
+	if (window->KeyHold(GLFW_KEY_Z)) {
+		logicSpace.width -= deltaTime * float(1); 
+		logicSpace.height -= deltaTime * float(1);
+	}
+	if (window->KeyHold(GLFW_KEY_X)) {
+		logicSpace.width += deltaTime * float(1);	
+		logicSpace.height += deltaTime * float(1);	
+	}
 }
 
 void Laborator3_Vis2D::OnKeyPress(int key, int mods)

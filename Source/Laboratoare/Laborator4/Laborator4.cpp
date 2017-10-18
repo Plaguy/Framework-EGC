@@ -84,6 +84,55 @@ void Laborator4::FrameEnd()
 void Laborator4::OnInputUpdate(float deltaTime, int mods)
 {
 	// TODO
+	//Translate cube 1
+	if (window->KeyHold(GLFW_KEY_W)) {
+		translateY -= deltaTime;
+	}
+	if (window->KeyHold(GLFW_KEY_S)) {
+		translateY += deltaTime;
+	}
+	if (window->KeyHold(GLFW_KEY_A)) {
+		translateX -= deltaTime;
+	}
+	if (window->KeyHold(GLFW_KEY_D)) {
+		translateX += deltaTime;
+	}
+	if (window->KeyHold(GLFW_KEY_R)) {
+		translateZ += deltaTime;
+	}
+	if (window->KeyHold(GLFW_KEY_F)) {
+		translateZ -= deltaTime;
+	}
+	//Scale cube 2
+	if (window->KeyHold(GLFW_KEY_1)) {
+		scaleX += deltaTime;
+		scaleY += deltaTime;
+		scaleZ += deltaTime;
+	}
+	if (window->KeyHold(GLFW_KEY_2)) {
+		scaleX -= deltaTime;
+		scaleY -= deltaTime;
+		scaleZ -= deltaTime;
+	}
+	//Rotate cube 3
+	if (window->KeyHold(GLFW_KEY_3)) {
+		angularStepOX -= deltaTime;
+	}
+	if (window->KeyHold(GLFW_KEY_4)) {
+		angularStepOX += deltaTime;
+	}
+	if (window->KeyHold(GLFW_KEY_5)) {
+		angularStepOY -= deltaTime;
+	}
+	if (window->KeyHold(GLFW_KEY_6)) {
+		angularStepOY += deltaTime;
+	}
+	if (window->KeyHold(GLFW_KEY_7)) {
+		angularStepOZ -= deltaTime;
+	}
+	if (window->KeyHold(GLFW_KEY_8)) {
+		angularStepOZ += deltaTime;
+	}
 }
 
 void Laborator4::OnKeyPress(int key, int mods)

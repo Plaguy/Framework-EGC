@@ -27,7 +27,9 @@ class Laborator3 : public SimpleScene
 		void OnWindowResize(int width, int height) override;
 
 	protected:
-		glm::mat3 modelMatrix;
+		glm::mat3 modelMatrix1;
+		glm::mat3 modelMatrix2;
+		glm::mat3 modelMatrix3;
 		float translateX, translateY;
 		float scaleX, scaleY;
 		float angularStep;

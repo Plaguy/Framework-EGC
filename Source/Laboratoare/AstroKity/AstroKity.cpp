@@ -46,14 +46,35 @@ void AstroKity::Init()
 	lengthY = 1.98f;
 	bool fill = true;
 
-	Mesh* square1 = Objects2D::CreateSquare("square1", corner, length, glm::vec3(1, 0, 0));
-	Mesh* rect1 = Objects2D::CreatePlatform("rect1", corner, lengthY);
+	//Create the arena; add it to the meshes vector
+	Mesh* arena = Objects2D::CreateRectangle("arena", corner, 4, 6.2f, glm::vec3(0, 0.1f, 0.1f));
+	AddMeshToList(arena);
+
+	//Create the player; add it to the meshes vector
 	Mesh* player = Objects2D::CreatePlayer("player", corner);
-	Mesh* asteroid1 = Objects2D::CreateAsteriod1("asteroid1", corner);
-	AddMeshToList(square1);
-	AddMeshToList(rect1);
 	AddMeshToList(player);
+	
+	//Create reflective platforms; add them to the meshes vector
+	Mesh* reflective1 = Objects2D::CreateReflectivePlatform("reflective1", corner, 1.5f);
+	AddMeshToList(reflective1);
+	Mesh* reflective2 = Objects2D::CreateReflectivePlatform("reflective2", corner, 1.2f);
+	AddMeshToList(reflective2);
+
+	//Create stationary platforms; add them to the meshes vector
+	Mesh* stationary1 = Objects2D::CreateStationaryPlatform("stationary1", corner, 1.9f);
+	AddMeshToList(stationary1);
+	Mesh* stationary2 = Objects2D::CreateStationaryPlatform("stationary2", corner, 1.5f);
+	AddMeshToList(stationary2);
+
+	//Create asteroids; add them to the meshes vector
+	Mesh* asteroid1 = Objects2D::CreateAsteroid1("asteroid1", corner);
 	AddMeshToList(asteroid1);
+	Mesh* asteroid2 = Objects2D::CreateAsteroid2("asteroid2", corner);
+	AddMeshToList(asteroid2);
+
+	//Create finish platform; add it to the meshes vector
+	Mesh* finish = Objects2D::CreateFinishPlatform("finish", corner);
+	AddMeshToList(finish);
 }
 
 // 2D visualization matrix
@@ -148,20 +169,46 @@ void AstroKity::FrameEnd()
 void AstroKity::DrawScene(glm::mat3 visMatrix)
 {
 	modelMatrix1 = visMatrix * Transform2D::Translate(0, 0);
-	RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix1);
+	RenderMesh2D(meshes["arena"], shaders["VertexColor"], modelMatrix1);
 
-	modelMatrix1 = visMatrix * Transform2D::Translate(3, 0);
-	RenderMesh2D(meshes["rect1"], shaders["VertexColor"], modelMatrix1);
-
-	modelMatrix1 = visMatrix * Transform2D::Translate(1.5, 1.5);
+	modelMatrix1 = visMatrix * Transform2D::Translate(1.8f, 0.01f);
 	RenderMesh2D(meshes["player"], shaders["VertexColor"], modelMatrix1);
-
 	
-	modelMatrix1 = visMatrix * Transform2D::Translate(0, 3);
+	modelMatrix1 = visMatrix * Transform2D::Translate(0, 1);
+	RenderMesh2D(meshes["reflective1"], shaders["VertexColor"], modelMatrix1);
+
+	modelMatrix1 = visMatrix * Transform2D::Translate(2.7f, 1.4f);
 	RenderMesh2D(meshes["asteroid1"], shaders["VertexColor"], modelMatrix1);
-	/*
-	modelMatrix1 = visMatrix * Transform2D::Translate(3, 3);
-	RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix1);*/
+
+	modelMatrix1 = visMatrix * Transform2D::Translate(1.9f, 2.2f);
+	RenderMesh2D(meshes["stationary1"], shaders["VertexColor"], modelMatrix1);
+
+	modelMatrix1 = visMatrix * Transform2D::Translate(0.5f, 2.1f);
+	RenderMesh2D(meshes["asteroid2"], shaders["VertexColor"], modelMatrix1);
+
+	modelMatrix1 = visMatrix * Transform2D::Translate(0.5f, 2.6f);
+	RenderMesh2D(meshes["asteroid2"], shaders["VertexColor"], modelMatrix1);
+
+	modelMatrix1 = visMatrix * Transform2D::Translate(1.1f, 3.4f);
+	RenderMesh2D(meshes["reflective2"], shaders["VertexColor"], modelMatrix1);
+
+	modelMatrix1 = visMatrix * Transform2D::Translate(0.1f, 4.8f);
+	RenderMesh2D(meshes["stationary2"], shaders["VertexColor"], modelMatrix1);
+	
+	modelMatrix1 = visMatrix * Transform2D::Translate(2.7f, 4.2f);
+	RenderMesh2D(meshes["asteroid1"], shaders["VertexColor"], modelMatrix1);
+	
+	modelMatrix1 = visMatrix * Transform2D::Translate(2.4f, 4.7f);
+	RenderMesh2D(meshes["asteroid2"], shaders["VertexColor"], modelMatrix1);
+
+	modelMatrix1 = visMatrix * Transform2D::Translate(3.1f, 4.7f);
+	RenderMesh2D(meshes["asteroid2"], shaders["VertexColor"], modelMatrix1);
+
+	modelMatrix1 = visMatrix * Transform2D::Translate(2.7f, 5.1f);
+	RenderMesh2D(meshes["asteroid1"], shaders["VertexColor"], modelMatrix1);
+
+	modelMatrix1 = visMatrix * Transform2D::Translate(2.3f, 6.1f);
+	RenderMesh2D(meshes["finish"], shaders["VertexColor"], modelMatrix1);
 }
 
 void AstroKity::OnInputUpdate(float deltaTime, int mods)

@@ -62,6 +62,8 @@ class AstroKity : public SimpleScene
 		glm::mat3 VisualizationTransf2DUnif(const LogicSpace &logicSpace, const ViewportSpace &viewSpace);
 
 		void SetViewportArea(const ViewportSpace &viewSpace, glm::vec3 colorColor = glm::vec3(0), bool clear = true);
+        
+        float UpdateFactor(float factor, float time, float min, float max);
 
 	protected:
 		glm::mat3 modelMatrix1, modelMatrix2, modelMatrix3, visMatrix;

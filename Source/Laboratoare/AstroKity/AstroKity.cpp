@@ -75,6 +75,14 @@ void AstroKity::Init()
 	//Create finish platform; add it to the meshes vector
 	Mesh* finish = Objects2D::CreateFinishPlatform("finish", corner);
 	AddMeshToList(finish);
+    
+    //Initialize the transformation factors
+    translateX = 0; //translation is between 0 and 1
+    translateY = 0; //up
+    angularStep = 0; //rotation
+    scaleX = 0; //scaling is between 0 and 1
+    scaleY = 0;
+    
 }
 
 // 2D visualization matrix
@@ -127,6 +135,22 @@ void AstroKity::SetViewportArea(const ViewportSpace & viewSpace, glm::vec3 color
 	GetSceneCamera()->Update();
 }
 
+float AstroKity::UpdateFactor(float factor, float time, float min, float max)
+{
+    if (factor < min) {
+        factor += time;
+    }
+    else {
+        if (factor > max) {
+            factor -= time;
+        }
+        else {
+            factor += time;
+        }
+    }
+    return factor;
+}
+
 void AstroKity::FrameStart()
 {
 	// Clears the color buffer (using the previously set color) and depth buffer
@@ -146,19 +170,13 @@ void AstroKity::Update(float deltaTimeSeconds)
 
 	// Compute the 2D visualization matrix
 	visMatrix = glm::mat3(1);
-	//visMatrix *= VisualizationTransf2D(logicSpace, viewSpace);
-
-	//DrawScene(visMatrix);
-
-	// The viewport is now the right half of the window
-
-	//viewSpace = ViewportSpace(resolution.x / 2, 0, resolution.x / 2, resolution.y);
-	//SetViewportArea(viewSpace, glm::vec3(0.5f), true);
-
-	// Compute uniform 2D visualization matrix
-	//visMatrix = glm::mat3(1);
 	visMatrix *= VisualizationTransf2DUnif(logicSpace, viewSpace);
 	DrawScene(visMatrix);
+    
+    angularStep += deltaTimeSeconds;
+    translateX = UpdateFactor(translateX, deltaTimeSeconds, 0, 1);
+    scaleX = UpdateFactor(scaleX, deltaTimeSeconds, 0, 1);
+    scaleY = UpdateFactor(scaleY, deltaTimeSeconds, 0, 1);
 }
 
 void AstroKity::FrameEnd()
@@ -178,15 +196,18 @@ void AstroKity::DrawScene(glm::mat3 visMatrix)
 	RenderMesh2D(meshes["reflective1"], shaders["VertexColor"], modelMatrix1);
 
 	modelMatrix1 = visMatrix * Transform2D::Translate(2.7f, 1.4f);
+    modelMatrix1 = modelMatrix1 * Transform2D::Rotate(angularStep);
 	RenderMesh2D(meshes["asteroid1"], shaders["VertexColor"], modelMatrix1);
 
 	modelMatrix1 = visMatrix * Transform2D::Translate(1.9f, 2.2f);
 	RenderMesh2D(meshes["stationary1"], shaders["VertexColor"], modelMatrix1);
 
 	modelMatrix1 = visMatrix * Transform2D::Translate(0.5f, 2.1f);
+    modelMatrix1 = modelMatrix1 * Transform2D::Scale(scaleX, scaleY);
 	RenderMesh2D(meshes["asteroid2"], shaders["VertexColor"], modelMatrix1);
 
 	modelMatrix1 = visMatrix * Transform2D::Translate(0.5f, 2.6f);
+    modelMatrix1 = modelMatrix1 * Transform2D::Translate(translateX, 0);
 	RenderMesh2D(meshes["asteroid2"], shaders["VertexColor"], modelMatrix1);
 
 	modelMatrix1 = visMatrix * Transform2D::Translate(1.1f, 3.4f);

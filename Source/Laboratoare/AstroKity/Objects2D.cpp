@@ -161,16 +161,16 @@ Mesh* Objects2D::CreateAsteroid1(std::string name, glm::vec3 leftBottomCorner)
 
 	std::vector<VertexFormat> vertices =
 	{
-		VertexFormat(corner + glm::vec3(0.3f, 0, 0), customColor1),
-		VertexFormat(corner + glm::vec3(0.1f, 0.1f, 0), customColor1),
-		VertexFormat(corner + glm::vec3(0, 0.3f, 0), customColor1),
-		VertexFormat(corner + glm::vec3(0.1f, 0.5f, 0), customColor2),
-		VertexFormat(corner + glm::vec3(0.3f, 0.6f, 0), customColor2),
-		VertexFormat(corner + glm::vec3(0.5f, 0.6f, 0), customColor2),
-        VertexFormat(corner + glm::vec3(0.7f, 0.5f, 0), customColor2),
-        VertexFormat(corner + glm::vec3(0.8f, 0.3f, 0), customColor2),
-        VertexFormat(corner + glm::vec3(0.7f, 0.1f, 0), customColor2),
-        VertexFormat(corner + glm::vec3(0.5f, 0, 0), customColor2)
+		VertexFormat(corner + glm::vec3(-0.05f, -0.175f, 0), customColor1),
+		VertexFormat(corner + glm::vec3(-0.15f, -0.1f, 0), customColor1),
+		VertexFormat(corner + glm::vec3(-0.2f, 0, 0), customColor1),
+		VertexFormat(corner + glm::vec3(-0.15f, 0.1f, 0), customColor1),
+		VertexFormat(corner + glm::vec3(-0.05f, 0.175f, 0), customColor1),
+		VertexFormat(corner + glm::vec3(0.05f, 0.175f, 0), customColor2),
+        VertexFormat(corner + glm::vec3(0.15f, 0.1f, 0), customColor2),
+        VertexFormat(corner + glm::vec3(0.2f, 0, 0), customColor2),
+        VertexFormat(corner + glm::vec3(0.15f, -0.1f, 0), customColor2),
+        VertexFormat(corner + glm::vec3(0.05f, -0.175f, 0), customColor2)
 	};
 	Mesh* asteroid = new Mesh(name);
 	std::vector<unsigned short> indices = { 0, 1, 2, 
@@ -196,14 +196,14 @@ Mesh* Objects2D::CreateAsteroid2(std::string name, glm::vec3 leftBottomCorner)
 
 	std::vector<VertexFormat> vertices =
 	{
-		VertexFormat(corner + glm::vec3(0.1f, 0, 0), customColor4),
-		VertexFormat(corner + glm::vec3(0, 0.1f, 0), customColor1),
-		VertexFormat(corner + glm::vec3(0, 0.2f, 0), customColor1),
-		VertexFormat(corner + glm::vec3(0.1f, 0.3f, 0), customColor2),
-		VertexFormat(corner + glm::vec3(0.2f, 0.3f, 0), customColor2),
-		VertexFormat(corner + glm::vec3(0.3f, 0.2f, 0), customColor3),
-		VertexFormat(corner + glm::vec3(0.3f, 0.1f, 0), customColor3),
-		VertexFormat(corner + glm::vec3(0.2f, 0, 0), customColor4)
+		VertexFormat(corner + glm::vec3(-0.05f, -0.15f, 0), customColor4),
+		VertexFormat(corner + glm::vec3(-0.15f, -0.05f, 0), customColor1),
+		VertexFormat(corner + glm::vec3(-0.15f, 0.05f, 0), customColor1),
+		VertexFormat(corner + glm::vec3(-0.05f, 0.15f, 0), customColor2),
+		VertexFormat(corner + glm::vec3(0.05f, 0.15f, 0), customColor2),
+		VertexFormat(corner + glm::vec3(0.15f, 0.05f, 0), customColor3),
+		VertexFormat(corner + glm::vec3(0.15f, -0.05f, 0), customColor3),
+		VertexFormat(corner + glm::vec3(0.05f, -0.15, 0), customColor4)
 	};
 	Mesh* asteroid = new Mesh(name);
 	std::vector<unsigned short> indices = { 0, 1, 2, 

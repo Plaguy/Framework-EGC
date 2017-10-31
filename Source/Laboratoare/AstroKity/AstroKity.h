@@ -6,7 +6,10 @@ Copyright 2017-2018: Diana Dumitrescu (333CB) */
 
 #include <Component/SimpleScene.h>
 #include <string>
+#include <unordered_map>
 #include <Core/Engine.h>
+
+#include "Animation2D.h"
 
 class AstroKity : public SimpleScene
 {
@@ -62,15 +65,17 @@ class AstroKity : public SimpleScene
 		glm::mat3 VisualizationTransf2DUnif(const LogicSpace &logicSpace, const ViewportSpace &viewSpace);
 
 		void SetViewportArea(const ViewportSpace &viewSpace, glm::vec3 colorColor = glm::vec3(0), bool clear = true);
-        
-        float UpdateFactor(float factor, float time, float min, float max);
 
 	protected:
 		glm::mat3 modelMatrix1, modelMatrix2, modelMatrix3, visMatrix;
 		float length, lengthX, lengthY;
 		ViewportSpace viewSpace;
 		LogicSpace logicSpace;
+		//std::unordered_map<std::string, Animation2D> m;
 		float translateX, translateY;
 		float scaleX, scaleY;
 		float angularStep;
+		int s1, s2;
+		Animation2D *p;
+		Animation2D *obstacle1, *obstacle2, *obstacle3, *obstacle4, *obstacle5, *obstacle6, *obstacle7;
 };

@@ -12,19 +12,30 @@ Copyright 2017-2018: Diana Dumitrescu (333CB) */
 
 #include <vector>
 #include <iostream>
+#include <unordered_map>
 
 #include <Core/Engine.h>
 #include "Transform2D.h"
 #include "Objects2D.h"
+#include "UtilsKity.h"
 
 using namespace std;
 
 AstroKity::AstroKity()
 {
+	p = new Animation2D(1.8f, 0.01f, 0, 0, 0, 0);
+	obstacle1 = new Animation2D(2.7f, 1.4f, 0, 0, 0, 0);
+	obstacle2 = new Animation2D(0.5f, 2.1f, 0, 0, 0, 0);
+	obstacle3 = new Animation2D(0.5f, 2.6f, 0, 0, 0, 0);
+	obstacle4 = new Animation2D(2.7f, 4.2f, 0, 0, 0, 0);
+	obstacle5 = new Animation2D(2.4f, 4.7f, 0, 0, 0, 0);
+	obstacle6 = new Animation2D(3.1f, 4.7f, 0, 0, 0, 0);
+	obstacle7 = new Animation2D(2.7f, 5.1f, 0, 0, 0, 0);
 }
 
 AstroKity::~AstroKity()
 {
+	delete(p);
 }
 
 void AstroKity::Init()
@@ -75,14 +86,17 @@ void AstroKity::Init()
 	//Create finish platform; add it to the meshes vector
 	Mesh* finish = Objects2D::CreateFinishPlatform("finish", corner);
 	AddMeshToList(finish);
-    
+
     //Initialize the transformation factors
     translateX = 0; //translation is between 0 and 1
     translateY = 0; //up
     angularStep = 0; //rotation
     scaleX = 0; //scaling is between 0 and 1
     scaleY = 0;
-    
+
+
+	s1 = 0;
+	s2 = 0;
 }
 
 // 2D visualization matrix
@@ -135,22 +149,6 @@ void AstroKity::SetViewportArea(const ViewportSpace & viewSpace, glm::vec3 color
 	GetSceneCamera()->Update();
 }
 
-float AstroKity::UpdateFactor(float factor, float time, float min, float max)
-{
-    if (factor < min) {
-        factor += time;
-    }
-    else {
-        if (factor > max) {
-            factor -= time;
-        }
-        else {
-            factor += time;
-        }
-    }
-    return factor;
-}
-
 void AstroKity::FrameStart()
 {
 	// Clears the color buffer (using the previously set color) and depth buffer
@@ -174,9 +172,14 @@ void AstroKity::Update(float deltaTimeSeconds)
 	DrawScene(visMatrix);
     
     angularStep += deltaTimeSeconds;
-    translateX = UpdateFactor(translateX, deltaTimeSeconds, 0, 1);
-    scaleX = UpdateFactor(scaleX, deltaTimeSeconds, 0, 1);
-    scaleY = UpdateFactor(scaleY, deltaTimeSeconds, 0, 1);
+    //translateX = UpdateFactor(translateX, 0.1f, 0, 3);
+
+	//obstacle1->
+	s1 = UtilsKity::GetStatus(scaleX, 0, 1, s1);
+	s2 = UtilsKity::GetStatus(scaleY, 0, 1, s2);
+	translateX = UtilsKity::UpdateFactor(translateX, deltaTimeSeconds, s1);
+    scaleX = UtilsKity::UpdateFactor(scaleX, deltaTimeSeconds, s1);
+    scaleY = UtilsKity::UpdateFactor(scaleY, deltaTimeSeconds, s2);
 }
 
 void AstroKity::FrameEnd()
@@ -189,24 +192,24 @@ void AstroKity::DrawScene(glm::mat3 visMatrix)
 	modelMatrix1 = visMatrix * Transform2D::Translate(0, 0);
 	RenderMesh2D(meshes["arena"], shaders["VertexColor"], modelMatrix1);
 
-	modelMatrix1 = visMatrix * Transform2D::Translate(1.8f, 0.01f);
+	modelMatrix1 = visMatrix * Transform2D::Translate(p->translateX, p->translateY);
 	RenderMesh2D(meshes["player"], shaders["VertexColor"], modelMatrix1);
 	
 	modelMatrix1 = visMatrix * Transform2D::Translate(0, 1);
 	RenderMesh2D(meshes["reflective1"], shaders["VertexColor"], modelMatrix1);
 
-	modelMatrix1 = visMatrix * Transform2D::Translate(2.7f, 1.4f);
+	modelMatrix1 = visMatrix * Transform2D::Translate(obstacle1->translateX, obstacle1->translateY);
     modelMatrix1 = modelMatrix1 * Transform2D::Rotate(angularStep);
 	RenderMesh2D(meshes["asteroid1"], shaders["VertexColor"], modelMatrix1);
 
 	modelMatrix1 = visMatrix * Transform2D::Translate(1.9f, 2.2f);
 	RenderMesh2D(meshes["stationary1"], shaders["VertexColor"], modelMatrix1);
 
-	modelMatrix1 = visMatrix * Transform2D::Translate(0.5f, 2.1f);
+	modelMatrix1 = visMatrix * Transform2D::Translate(obstacle2->translateX, obstacle2->translateY);
     modelMatrix1 = modelMatrix1 * Transform2D::Scale(scaleX, scaleY);
 	RenderMesh2D(meshes["asteroid2"], shaders["VertexColor"], modelMatrix1);
 
-	modelMatrix1 = visMatrix * Transform2D::Translate(0.5f, 2.6f);
+	modelMatrix1 = visMatrix * Transform2D::Translate(obstacle3->translateX, obstacle3->translateY);
     modelMatrix1 = modelMatrix1 * Transform2D::Translate(translateX, 0);
 	RenderMesh2D(meshes["asteroid2"], shaders["VertexColor"], modelMatrix1);
 
@@ -216,16 +219,16 @@ void AstroKity::DrawScene(glm::mat3 visMatrix)
 	modelMatrix1 = visMatrix * Transform2D::Translate(0.1f, 4.8f);
 	RenderMesh2D(meshes["stationary2"], shaders["VertexColor"], modelMatrix1);
 	
-	modelMatrix1 = visMatrix * Transform2D::Translate(2.7f, 4.2f);
+	modelMatrix1 = visMatrix * Transform2D::Translate(obstacle4->translateX, obstacle4->translateY);
 	RenderMesh2D(meshes["asteroid1"], shaders["VertexColor"], modelMatrix1);
 	
-	modelMatrix1 = visMatrix * Transform2D::Translate(2.4f, 4.7f);
+	modelMatrix1 = visMatrix * Transform2D::Translate(obstacle5->translateX, obstacle5->translateY);
 	RenderMesh2D(meshes["asteroid2"], shaders["VertexColor"], modelMatrix1);
 
-	modelMatrix1 = visMatrix * Transform2D::Translate(3.1f, 4.7f);
+	modelMatrix1 = visMatrix * Transform2D::Translate(obstacle6->translateX, obstacle6->translateY);
 	RenderMesh2D(meshes["asteroid2"], shaders["VertexColor"], modelMatrix1);
 
-	modelMatrix1 = visMatrix * Transform2D::Translate(2.7f, 5.1f);
+	modelMatrix1 = visMatrix * Transform2D::Translate(obstacle7->translateX, obstacle7->translateY);
 	RenderMesh2D(meshes["asteroid1"], shaders["VertexColor"], modelMatrix1);
 
 	modelMatrix1 = visMatrix * Transform2D::Translate(2.3f, 6.1f);

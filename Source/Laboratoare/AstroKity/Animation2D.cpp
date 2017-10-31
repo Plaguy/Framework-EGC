@@ -21,7 +21,7 @@ Animation2D::~Animation2D()
 {
 }
 
-float Animation2D::GetTranslateX()
+/*float Animation2D::GetTranslateX()
 {
 	return this->translateX;
 }
@@ -50,3 +50,4 @@ int Animation2D::GetStatus()
 {
 	return status;
 }
+*/

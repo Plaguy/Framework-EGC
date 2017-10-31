@@ -63,6 +63,7 @@ class AstroKity : public SimpleScene
 		//viewSpace: { x, y, width, height }
 		glm::mat3 VisualizationTransf2D(const LogicSpace &logicSpace, const ViewportSpace &viewSpace);
 		glm::mat3 VisualizationTransf2DUnif(const LogicSpace &logicSpace, const ViewportSpace &viewSpace);
+		glm::vec3 TransformViewPoint(const LogicSpace &logicSpace, const ViewportSpace &viewSpace, glm::vec3 point);
 
 		void SetViewportArea(const ViewportSpace &viewSpace, glm::vec3 colorColor = glm::vec3(0), bool clear = true);
 
@@ -72,10 +73,7 @@ class AstroKity : public SimpleScene
 		ViewportSpace viewSpace;
 		LogicSpace logicSpace;
 		//std::unordered_map<std::string, Animation2D> m;
-		float translateX, translateY;
-		float scaleX, scaleY;
-		float angularStep;
-		int s1, s2;
+		int launch;
 		Animation2D *p;
 		Animation2D *obstacle1, *obstacle2, *obstacle3, *obstacle4, *obstacle5, *obstacle6, *obstacle7;
 };

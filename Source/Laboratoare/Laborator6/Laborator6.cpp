@@ -189,6 +189,11 @@ void Laborator6::RenderSimpleMesh(Mesh *mesh, Shader *shader, const glm::mat4 & 
 	glm::mat4 projectionMatrix = GetSceneCamera()->GetProjectionMatrix();
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 
+	// set shader uniform "time" to getelapsedtime
+	location = glGetUniformLocation(shader->program, "time");
+	float x = float(Engine::GetElapsedTime());
+	glUniform1f(location, x);
+
 	// Draw the object
 	glBindVertexArray(mesh->GetBuffers()->VAO);
 	glDrawElements(mesh->GetDrawMode(), static_cast<int>(mesh->indices.size()), GL_UNSIGNED_SHORT, 0);

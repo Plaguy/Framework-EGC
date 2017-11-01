@@ -170,18 +170,24 @@ void Laborator6::RenderSimpleMesh(Mesh *mesh, Shader *shader, const glm::mat4 & 
 	glUseProgram(shader->program);
 
 	// TODO : get shader location for uniform mat4 "Model"
+    int location = glGetUniformLocation(shader->program, "Model");
 
 	// TODO : set shader uniform "Model" to modelMatrix
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
 	// TODO : get shader location for uniform mat4 "View"
+    location = glGetUniformLocation(shader->program, "View");
 
 	// TODO : set shader uniform "View" to viewMatrix
 	glm::mat4 viewMatrix = GetSceneCamera()->GetViewMatrix();
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(viewMatrix));
 
 	// TODO : get shader location for uniform mat4 "Projection"
+    location = glGetUniformLocation(shader->program, "Projection");
 
 	// TODO : set shader uniform "Projection" to projectionMatrix
 	glm::mat4 projectionMatrix = GetSceneCamera()->GetProjectionMatrix();
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 
 	// Draw the object
 	glBindVertexArray(mesh->GetBuffers()->VAO);

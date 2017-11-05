@@ -142,9 +142,9 @@ Mesh* Objects2D::CreatePlayer(std::string name, glm::vec3 leftBottomCorner)
 
 	std::vector<VertexFormat> vertices =
 	{
-		VertexFormat(corner, green),
-		VertexFormat(corner + glm::vec3(0.2f, 0.3f, 0), blue),
-		VertexFormat(corner + glm::vec3(0.4f, 0, 0), green)
+		VertexFormat(corner + glm::vec3(-0.2f, -0.2f, 0), green),
+		VertexFormat(corner + glm::vec3(0, 0.2f, 0), blue),
+		VertexFormat(corner + glm::vec3(0.2f, -0.2f, 0), green)
 	};
 	Mesh* player = new Mesh(name);
 	std::vector<unsigned short> indices = { 0, 1, 2 };
@@ -216,3 +216,23 @@ Mesh* Objects2D::CreateAsteroid2(std::string name, glm::vec3 leftBottomCorner)
 	asteroid->InitFromData(vertices, indices);
 	return asteroid;
 }
+
+float Objects2D::CalculateVectorLength(glm::vec3 vector)
+{
+	/*
+	@param vector - vector whose length needs to be calculated
+	@return the vector's length value
+	*/
+	return abs(sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2]));
+}
+
+glm::vec3 Objects2D::NormalizeVector(glm::vec3 vector, float length)
+{
+	/*
+	@param vector - vector to be normalized
+	@param length - vector's length
+	@return the normalized vector
+	*/
+	return glm::vec3(vector[0] / length, vector[1] / length, vector[2] / length);
+}
+

@@ -25,7 +25,7 @@ AstroKity::AstroKity()
 {
 	// Parameters for Animation2D: translateX, translateY, scaleX, scaleY, angularStep, status
 	// Initial parameters
-	p = new Animation2D(1.8f, 0.01f, 0, 0, 0, 0);
+	p = new Animation2D(1.8f, 0.2f, 0, 0, 0, 0);
 	obstacle1 = new Animation2D(2.7f, 1.4f, 0, 0, 0, 0);
 	obstacle2 = new Animation2D(1, 2.1f, 0, 0, 0, 0);
 	obstacle3 = new Animation2D(1, 2.6f, 0, 0, 0, 0);
@@ -51,7 +51,7 @@ void AstroKity::Init()
 	logicSpace.x = 0;		// logic x
 	logicSpace.y = 0;		// logic y
 	logicSpace.width = 4;	// logic width
-	logicSpace.height = 4;	// logic height
+	logicSpace.height = 6.2f;	// logic height
 
 	glm::vec3 corner = glm::vec3(0.001, 0.001, 0);
 	length = 0.99f;
@@ -138,8 +138,8 @@ glm::vec3 AstroKity::TransformViewPoint(const LogicSpace &logicSpace, const View
 		smin = sy;
 	tx = viewSpace.x - smin * logicSpace.x + (viewSpace.width - smin * logicSpace.width) / 2;
 	ty = viewSpace.y - smin * logicSpace.y + (viewSpace.height - smin * logicSpace.height) / 2;
-	xf = (point[0] - tx) / smin ;
-	yf = (point[1] - ty) / smin;
+	xf = (point[0] - tx) / smin;
+	yf = logicSpace.height - ((point[1] - ty) / smin);
 	return glm::vec3(xf, yf, 0);
 }
 
@@ -184,11 +184,13 @@ void AstroKity::Update(float deltaTimeSeconds)
 	//Animate player
 	if (launch == 1)
 	{
-		p->status = UtilsKity::GetStatus(p->translateX, p->mintX, p->maxtX, p->status);
-		p->translateX = UtilsKity::UpdateFactor(p->translateX, deltaTimeSeconds, p->status);
-		p->status = UtilsKity::GetStatus(p->translateY, p->mintY, p->maxtY, p->status);
-		p->translateY = UtilsKity::UpdateFactor(p->translateY, deltaTimeSeconds, p->status);
-		
+		//p->status = UtilsKity::GetStatus(p->translateX, p->mintX, p->maxtX, p->status);
+		//p->status = UtilsKity::GetStatus(p->translateY, p->mintY, p->maxtY, p->status);
+		float step = UtilsKity::UniformTransformFactor(p->translateY, deltaTimeSeconds, p->mintY, p->maxtY, p->mintX, p->maxtX);
+		p->translateX = UtilsKity::MovePlayer(p->translateX, step, p->mintX, p->maxtX);
+		p->translateY = UtilsKity::MovePlayer(p->translateY, deltaTimeSeconds, p->mintY, p->maxtY);
+		printf("txmin=%f, txmax=%f, tx=%f, step=%f\n", p->mintX, p->maxtX, p->translateX, step);
+		printf("tymin=%f, tymax=%f, ty=%f, deltatime=%f\n", p->mintY, p->maxtY, p->translateY, deltaTimeSeconds);
 	}
 
 	//Animate obstacle1
@@ -196,32 +198,32 @@ void AstroKity::Update(float deltaTimeSeconds)
 	
 	//Animate obstacle2
 	obstacle2->status = UtilsKity::GetStatus(obstacle2->scaleX, 0.5f, 1, obstacle2->status);
-	obstacle2->scaleX = UtilsKity::UpdateFactor(obstacle2->scaleX, deltaTimeSeconds, obstacle2->status);
+	obstacle2->scaleX = UtilsKity::VariateFactor(obstacle2->scaleX, deltaTimeSeconds, obstacle2->status);
 	obstacle2->status = UtilsKity::GetStatus(obstacle2->scaleY, 0.5f, 1, obstacle2->status);
-	obstacle2->scaleY = UtilsKity::UpdateFactor(obstacle2->scaleY, deltaTimeSeconds, obstacle2->status);
+	obstacle2->scaleY = UtilsKity::VariateFactor(obstacle2->scaleY, deltaTimeSeconds, obstacle2->status);
 
 	//Animate obstacle3
 	obstacle3->status = UtilsKity::GetStatus(obstacle3->translateX, 0.2f, 0.8f, obstacle3->status);
-	obstacle3->translateX = UtilsKity::UpdateFactor(obstacle3->translateX, deltaTimeSeconds, obstacle3->status);
+	obstacle3->translateX = UtilsKity::VariateFactor(obstacle3->translateX, deltaTimeSeconds, obstacle3->status);
 
 	//Animate obstacle4
 	obstacle4->angularStep += deltaTimeSeconds;
 
 	//Animate obstacle5
 	obstacle5->status = UtilsKity::GetStatus(obstacle5->scaleX, 1, 1.5f, obstacle5->status);
-	obstacle5->scaleX = UtilsKity::UpdateFactor(obstacle5->scaleX, deltaTimeSeconds, obstacle5->status);
+	obstacle5->scaleX = UtilsKity::VariateFactor(obstacle5->scaleX, deltaTimeSeconds, obstacle5->status);
 	obstacle5->status = UtilsKity::GetStatus(obstacle5->scaleY, 1, 1.5f, obstacle5->status);
-	obstacle5->scaleY = UtilsKity::UpdateFactor(obstacle5->scaleY, deltaTimeSeconds, obstacle5->status);
+	obstacle5->scaleY = UtilsKity::VariateFactor(obstacle5->scaleY, deltaTimeSeconds, obstacle5->status);
 
 	//Animate obstacle6
 	obstacle6->status = UtilsKity::GetStatus(obstacle6->scaleX, 1, 1.5f, obstacle6->status);
-	obstacle6->scaleX = UtilsKity::UpdateFactor(obstacle6->scaleX, deltaTimeSeconds, obstacle6->status);
+	obstacle6->scaleX = UtilsKity::VariateFactor(obstacle6->scaleX, deltaTimeSeconds, obstacle6->status);
 	obstacle6->status = UtilsKity::GetStatus(obstacle6->scaleY, 1, 1.5f, obstacle6->status);
-	obstacle6->scaleY = UtilsKity::UpdateFactor(obstacle6->scaleY, deltaTimeSeconds, obstacle6->status);
+	obstacle6->scaleY = UtilsKity::VariateFactor(obstacle6->scaleY, deltaTimeSeconds, obstacle6->status);
 
 	//Animate obstacle7
 	obstacle7->status = UtilsKity::GetStatus(obstacle7->translateY, 5.1f, 5.7f, obstacle7->status);
-	obstacle7->translateY = UtilsKity::UpdateFactor(obstacle7->translateY, deltaTimeSeconds, obstacle7->status);
+	obstacle7->translateY = UtilsKity::VariateFactor(obstacle7->translateY, deltaTimeSeconds, obstacle7->status);
 }
 
 void AstroKity::FrameEnd()
